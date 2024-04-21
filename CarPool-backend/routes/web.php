@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [PassengerController::class, 'list']);
-
+Route::get('/edit/{id}', [PassengerController::class, 'edit']);
+Route::put('/performEdit/{passenger}', [PassengerController::class, 'performEdit']);
 // Route::get('/', function () {
 //     return view('/users/list');
 // });

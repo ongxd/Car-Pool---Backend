@@ -9,5 +9,9 @@ class Passenger extends Model
 {
     use HasFactory;
 
-    protected $table = 'passenger';
+    protected $table = 'passengers';
+
+    protected $fillable = [
+        'email', 'password', 'name', 'gender', 'contactNo', 'studentCardExpDate', 'studentCard', 'profileImg', 'passengerStatus'
+    ];
 }
