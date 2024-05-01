@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationMail;
 
 class PassengerController extends Controller
 {
@@ -161,10 +163,13 @@ class PassengerController extends Controller
         $passenger->studentCardExpDate = $request->input('studentCardExpDate');
         $result = $passenger->save();
 
+        $mailresult = Mail::to($passenger->email)->send(new VerificationMail($passenger->id));
+
         if ($result) {
             return response()->json([
                 'status' => 200,
-                'passenger' => $passenger
+                'passenger' => $passenger,
+                'mail' => $mailresult
             ], 200);
         } else {
             return response()->json([

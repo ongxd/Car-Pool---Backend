@@ -2,7 +2,12 @@
 
 use App\Http\Controllers\PassengerController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Requests\CustomPassengerVerificationRequest;
+use App\Models\Passenger;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationMail;
+use Illuminate\Auth\Events\Verified;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +22,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PassengerController::class, 'list']);
 Route::get('/edit/{id}', [PassengerController::class, 'edit']);
 Route::put('/performEdit/{passenger}', [PassengerController::class, 'performEdit']);
-// Route::get('/', function () {
-//     return view('/users/list');
-// });
+
+
+
+Route::get('/email-verified/{id}', function ($id) {
+    $passenger = Passenger::find($id);
+    $passenger->markEmailAsVerified();
+    event(new Verified($passenger));
+    return view('emails.emailVerifySuccess');
+});
